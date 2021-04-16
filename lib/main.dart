@@ -19,22 +19,31 @@ class Lista extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Card(
-          child: ListTile(
-            leading: Icon(Icons.monetization_on),
-            title: Text('600'),
-            subtitle: Text('1000'),
-          ),
-        ),
-        Card(
-          child: ListTile(
-            leading: Icon(Icons.monetization_on),
-            title: Text('200'),
-            subtitle: Text('1000'),
-          ),
-        ),
+        ItemTransferencia(),
+        ItemTransferencia(),
+        ItemTransferencia(),
       ],
     );
   }
 }
+
+class ItemTransferencia extends StatelessWidget {
+
+  final String valor;
+  final String conta;
+
+  ItemTransferencia(this.valor, this.conta);
+  
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        leading: Icon(Icons.monetization_on),
+        title: Text(valor),
+        subtitle: Text(conta),
+      ),
+    );
+  }
+}
+
 
