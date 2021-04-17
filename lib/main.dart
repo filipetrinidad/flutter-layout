@@ -8,18 +8,67 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Lista(),
+        body: Formulario(),
       ),
     );
   }
 }
 
 class Formulario extends StatelessWidget {
+
+  final TextEditingController _controladorConta = TextEditingController();
+  final TextEditingController _controladorValor = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Crir uma transferência'),
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _controladorConta,
+              style: TextStyle(
+                fontSize: 24.0
+              ),
+              decoration: InputDecoration(
+                labelText: 'Número da conta',
+                hintText: '0000'
+              ),
+              keyboardType: TextInputType.number,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _controladorValor,
+              style: TextStyle(
+                fontSize: 24.0
+              ),
+              decoration: InputDecoration(
+                icon: Icon(Icons.monetization_on),
+                labelText: 'Valor',
+                hintText: '0,00',
+              ),
+            ),
+          ),
+          RaisedButton(
+            child: Text('Confirmar'),
+            color: Colors.green,
+            onPressed: () {
+              final int numeroConta = int.tryParse(_controladorConta.text);
+              final double numeroValor = double.tryParse(_controladorValor.text);
+
+              if(numeroConta != null && numeroValor!= null){
+                final transferenciaCriada = Transferencia(numeroValor, numeroConta);
+                debugPrint('$transferenciaCriada');
+              }
+            },
+          ),
+        ],
       ),
     );
   }
@@ -35,9 +84,9 @@ class Lista extends StatelessWidget {
       ),
       body: Column(
         children: [
-          ItemTransferencia(Transferecnia(100.0, 200)),
-          ItemTransferencia(Transferecnia(300.0, 400)),
-          ItemTransferencia(Transferecnia(300.0, 1000)),
+          ItemTransferencia(Transferencia(100.0, 200)),
+          ItemTransferencia(Transferencia(300.0, 400)),
+          ItemTransferencia(Transferencia(300.0, 1000)),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -49,7 +98,7 @@ class Lista extends StatelessWidget {
 }
 
 class ItemTransferencia extends StatelessWidget {
-  final Transferecnia _transferecnia;
+  final Transferencia _transferecnia;
 
   ItemTransferencia(this._transferecnia);
 
@@ -65,9 +114,15 @@ class ItemTransferencia extends StatelessWidget {
   }
 }
 
-class Transferecnia {
+class Transferencia {
   final double valor;
   final int conta;
 
-  Transferecnia(this.valor, this.conta);
+  Transferencia(this.valor, this.conta);
+
+  @override
+  String toString(){
+    return '$valor , $conta';
+  }
+
 }
