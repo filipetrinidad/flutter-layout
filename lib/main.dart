@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -8,7 +10,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Formulario(),
+        body: Lista(),
       ),
     );
   }
@@ -31,28 +33,24 @@ class Formulario extends StatelessWidget {
           RaisedButton(
             child: Text('Confirmar'),
             color: Colors.green,
-            onPressed: () => _transferir();
+            onPressed: () => _transferir(context),
           ),
         ],
       ),
     );
   }
 
-  void _transferir() {
+  void _transferir(BuildContext context) {
     
     final int numeroConta = int.tryParse(_controladorConta.text);
     final double numeroValor =
         double.tryParse(_controladorValor.text);
     if (numeroConta != null && numeroValor != null) {
-      final transferenciaCriada =
-          Transferencia(numeroValor, numeroConta);
+        final transferenciaCriada = Transferencia(numeroValor, numeroConta);
+      Navigator.pop(context, transferenciaCriada);
     }
   }
 }
-
- void Transferir(){
-
- }
 
 class Editor extends StatelessWidget {
   final TextEditingController controlador;
@@ -78,22 +76,35 @@ class Editor extends StatelessWidget {
 }
 
 class Lista extends StatelessWidget {
+
+  final List<Transferencia> _transferencias = List();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Transferências'),
       ),
-      body: Column(
-        children: [
-          ItemTransferencia(Transferencia(100.0, 200)),
-          ItemTransferencia(Transferencia(300.0, 400)),
-          ItemTransferencia(Transferencia(300.0, 1000)),
-        ],
+      body: ListView.builder(
+        itemCount: _transferencias.length,
+        itemBuilder: (context, indice){
+          final transferencia = _transferencias[indice];
+          return ItemTransferencia(transferencia);
+        },
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: Colors.blueGrey,
+        onPressed: (){
+         final Future <Transferencia> future =  Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return Formulario();
+          }));
+         future.then((transferenciaRecebida){
+
+           _transferencias.add(transferenciaRecebida);
+
+         });
+        },
       ),
     );
   }
