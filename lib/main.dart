@@ -1,5 +1,5 @@
+import 'package:alura/screens/lista_transferencia.dart';
 import 'package:flutter/material.dart';
-import 'components/editor.dart';
 
 void main() => runApp(MyApp());
 

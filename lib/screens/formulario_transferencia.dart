@@ -2,7 +2,14 @@ import 'package:alura/components/editor.dart';
 import 'package:alura/models/transferencia.dart';
 import 'package:flutter/material.dart';
 
-class Formulario extends StatelessWidget {
+class FormularioTransferencia extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return Formulario();
+  }
+}
+
+class Formulario extends State<FormularioTransferencia> {
   final TextEditingController _controladorConta = TextEditingController();
   final TextEditingController _controladorValor = TextEditingController();
 
@@ -12,7 +19,8 @@ class Formulario extends StatelessWidget {
       appBar: AppBar(
         title: Text('Criar uma transferência'),
       ),
-      body: Column(
+      body: SingleChildScrollView(
+        child: Column(
         children: [
           Editor(
               controlador: _controladorConta,
@@ -25,10 +33,11 @@ class Formulario extends StatelessWidget {
               icon: Icons.monetization_on),
           RaisedButton(
             child: Text('Confirmar'),
-            color: Colors.green,
+            color: Colors.blue,
             onPressed: () => _transferir(context),
           ),
         ],
+      ),
       ),
     );
   }
